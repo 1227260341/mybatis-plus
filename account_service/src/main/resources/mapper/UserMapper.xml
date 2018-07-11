@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdx.account_service.dao.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tdx.account_service.entity.User">
+        <id column="userId" property="userId" />
+        <result column="uid" property="uid" />
+        <result column="userName" property="userName" />
+        <result column="password" property="password" />
+        <result column="actualName" property="actualName" />
+        <result column="schoolId" property="schoolId" />
+        <result column="userType" property="userType" />
+        <result column="roleId" property="roleId" />
+        <result column="platformId" property="platformId" />
+        <result column="sysGroupId" property="sysGroupId" />
+        <result column="validFlag" property="validFlag" />
+        <result column="makeTime" property="makeTime" />
+        <result column="makeUser" property="makeUser" />
+        <result column="modifyTime" property="modifyTime" />
+        <result column="modifyUser" property="modifyUser" />
+        <result column="wechat" property="wechat" />
+        <result column="head" property="head" />
+        <result column="lastLogin" property="lastLogin" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        userId, uid, userName, password, actualName, schoolId, userType, roleId, platformId, sysGroupId, validFlag, makeTime, makeUser, modifyTime, modifyUser, wechat, head, lastLogin
+    </sql>
+
+<!----zj ---->
+	<select id="queryAppByPage" parameterType="page" resultType="pd" useCache="false">
+		
+		select 
+			<include refid="Base_Column_List" /> 
+		from um_user
+		where 1=1
+			<if test="userId != null and userId != ''">
+				and userId = userId
+			</if>
+			<if test="uid != null and uid != ''">
+				and uid = uid
+			</if>
+			<if test="userName != null and userName != ''">
+				and userName = userName
+			</if>
+			<if test="password != null and password != ''">
+				and password = password
+			</if>
+			<if test="actualName != null and actualName != ''">
+				and actualName = actualName
+			</if>
+			<if test="schoolId != null and schoolId != ''">
+				and schoolId = schoolId
+			</if>
+			<if test="userType != null and userType != ''">
+				and userType = userType
+			</if>
+			<if test="roleId != null and roleId != ''">
+				and roleId = roleId
+			</if>
+			<if test="platformId != null and platformId != ''">
+				and platformId = platformId
+			</if>
+			<if test="sysGroupId != null and sysGroupId != ''">
+				and sysGroupId = sysGroupId
+			</if>
+			<if test="validFlag != null and validFlag != ''">
+				and validFlag = validFlag
+			</if>
+			<if test="makeTime != null and makeTime != ''">
+				and makeTime = makeTime
+			</if>
+			<if test="makeUser != null and makeUser != ''">
+				and makeUser = makeUser
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and modifyTime = modifyTime
+			</if>
+			<if test="modifyUser != null and modifyUser != ''">
+				and modifyUser = modifyUser
+			</if>
+			<if test="wechat != null and wechat != ''">
+				and wechat = wechat
+			</if>
+			<if test="head != null and head != ''">
+				and head = head
+			</if>
+			<if test="lastLogin != null and lastLogin != ''">
+				and lastLogin = lastLogin
+			</if>
+		
+		
+  	</select>
+
+</mapper>
