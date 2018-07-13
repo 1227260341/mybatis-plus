@@ -49,10 +49,11 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
  */
 public class MysqlGenerator {
 
-    private static String packageName="account_service";    //文件路径
+	private static String packageUrl="com21cnjy.crowdsourcing.";    //文件路径
+    private static String packageName="biz";    //文件路径
     private static String authorName="zhouzhenjang";     //作者
     private static String table="um_user";                  //table名字
-    private static String prefix="um_";                     //table前缀
+    private static String prefix="cs";                     //table前缀
     private static File file = new File(packageName);
     private static String path = file.getAbsolutePath();
 
@@ -62,18 +63,51 @@ public class MysqlGenerator {
         tableFillList.add(new TableFill("ASDD_SS", FieldFill.INSERT_UPDATE));
         
         List<FileOutConfig> focList = new ArrayList<>();
-        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
+        focList.add(new FileOutConfig("/templates/mapper2.xml.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path+"/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
-        focList.add(new FileOutConfig("/templates/controller.java.vm") {
+        
+        focList.add(new FileOutConfig("/templates/controller2.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return path+"/src/main/java/com/tdx/account_service/controller/" + tableInfo.getEntityName() + "Controller.java";
+                return path+"/src/main/java/com21cnjy/crowdsourcing/biz/controller/" + tableInfo.getEntityName() + "Controller.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/mapper2.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+"/src/main/java/com21cnjy/crowdsourcing/biz/mapper/" + tableInfo.getEntityName() + "Mapper.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/service.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+"/src/main/java/com21cnjy/crowdsourcing/biz/service/" + tableInfo.getEntityName() + "Service.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/serviceImpl.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+"/src/main/java/com21cnjy/crowdsourcing/biz/service/impl/" + tableInfo.getEntityName() + "ServiceImpl.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/entity.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+"/src/main/java/com21cnjy/crowdsourcing/biz/entity/" + tableInfo.getEntityName() + ".java";
             }
         });
         
@@ -113,8 +147,10 @@ public class MysqlGenerator {
                         })
                         .setDriverName("com.mysql.jdbc.Driver")
                         .setUsername("root")
-                        .setPassword("root")
-                        .setUrl("jdbc:mysql://localhost:3306/ecampus_new?characterEncoding=utf-8")
+//                        .setPassword("root")
+                        .setPassword("")
+                        .setUrl("jdbc:mysql://192.168.2.195:3310/crowdsourcing?characterEncoding=utf-8")
+//                        .setUrl("jdbc:mysql://localhost:3306/ecampus_new?characterEncoding=utf-8")
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()
@@ -122,7 +158,7 @@ public class MysqlGenerator {
                         //.setDbColumnUnderline(true)//全局下划线命名
                         .setTablePrefix(new String[]{prefix})// 此处可以修改为您的表前缀
                         .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                        .setInclude(new String[] { table }) // 需要生成的表
+                        .setInclude(new String[] { "cs_bulletin", "cs_bulletin_read" }) // 需要生成的表
                         .setRestControllerStyle(true)
                         //.setExclude(new String[]{"test"}) // 排除生成的表
                         // 自定义实体父类
@@ -137,7 +173,8 @@ public class MysqlGenerator {
                 // 自定义 service 实现类父类
                 // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
                 // 自定义 controller 父类
-                .setSuperControllerClass("com.tdx."+packageName+".controller.AbstractController")
+//                .setSuperControllerClass(packageUrl +packageName+".controller.AbstractController")
+                .setSuperControllerClass("com21cnjy.crowdsourcing.common.util.BaseController")
                 // 【实体】是否生成字段常量（默认 false）
                 // public static final String ID = "test_id";
                 // .setEntityColumnConstant(true)
@@ -154,7 +191,7 @@ public class MysqlGenerator {
                 // 包配置
                 new PackageConfig()
                         //.setModuleName("User")
-                        .setParent("com.tdx."+packageName)// 自定义包路径
+                        .setParent(packageUrl+packageName)// 自定义包路径
                         .setController("controller")// 这里是控制器包名，默认 web
                         .setEntity("entity")
                         .setMapper("dao")

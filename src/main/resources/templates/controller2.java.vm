@@ -1,0 +1,208 @@
+package ${package.Controller};
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+import com21cnjy.crowdsourcing.common.util.PageData;
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@tController
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+	@Resource
+	private ${table.mapperName} mapper;
+	@Resource
+	private ${table.serviceName} ${table.entityPath}Service;
+	
+	
+
+	/**
+     * @description : 获取列表
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@RequestMapping("/queryByPage")
+	public @ResponseBody ModelAndView queryByPage(${entity} ${table.entityPath}){
+		Map returnMap = new HashMap();
+		try {
+			
+			//			EntityWrapper ew=new EntityWrapper();
+//			Page page=new Page(1,2);
+//			ew.setEntity(new Bulletin());
+//			//ew.where("name = {0}",name).andNew("age > {0}",age).orderBy("age");
+////			List<${entity}> list = bulletinService.selectList(ew);
+//			Page page2 = bulletinService.selectPage(page, ew);
+			
+			List<${entity}> list = mapper.queryByPage(${table.entityPath});
+			
+	       	returnMap.put("code", 200);
+	       	returnMap.put("data", list);
+	       	returnMap.put("message", "获取列表成功！");
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		} catch (Exception e) {
+			returnMap.put("code", 500);
+	       	returnMap.put("message", "获取列表失败！");
+	       	returnMap.put("error", e + e.getMessage());
+	       	e.printStackTrace();
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		}
+	}
+
+	/**
+     * @description : 添加
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@RequestMapping("/add")
+	public @ResponseBody ModelAndView add(${entity} ${table.entityPath}){
+		Map returnMap = new HashMap();
+		try {
+			
+			mapper.add(${table.entityPath});
+			
+	       	returnMap.put("code", 200);
+	       	returnMap.put("message", "添加成功！");
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		} catch (Exception e) {
+			returnMap.put("code", 500);
+	       	returnMap.put("message", "更新失败！");
+	       	returnMap.put("error", e + e.getMessage());
+	       	e.printStackTrace();
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		}
+	}
+	
+	/**
+     * @description : 修改
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@RequestMapping("/update")
+	public @ResponseBody ModelAndView update(${entity} ${table.entityPath}){
+		Map returnMap = new HashMap();
+		try {
+			
+			mapper.update(${table.entityPath});
+			
+	       	returnMap.put("code", 200);
+	       	returnMap.put("message", "更新成功！");
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		} catch (Exception e) {
+			returnMap.put("code", 500);
+	       	returnMap.put("message", "更新失败！");
+	       	returnMap.put("error", e + e.getMessage());
+	       	e.printStackTrace();
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		}
+	}
+	
+	/**
+     * @description : 修改
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@RequestMapping("/getById")
+	public ModelAndView getById(@Param("id") int id) {
+		Map returnMap = new HashMap();
+		PageData pd = this.getPageData();
+		String id1  = (String) pd.get("id");
+		${entity} data = ${table.entityPath}Service.selectById(id);
+		
+       	returnMap.put("code", 200);
+       	returnMap.put("data", data);
+       	returnMap.put("message", "添加成功！");
+       	ModelAndView mv = this.getModelAndView(returnMap);
+		return mv;
+	}
+	
+	/**
+     * @description : 设置无效（逻辑删除）
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@RequestMapping("/setInvalid")
+	public @ResponseBody ModelAndView setInvalid(@Param("id") Integer id){
+		Map returnMap = new HashMap();
+		try {
+			if (id == null) {
+				returnMap.put("code", 400);
+		       	returnMap.put("message", "请求参数错误！");
+		       	ModelAndView mv = this.getModelAndView(returnMap);
+				return mv;
+			}
+			
+			mapper.setInvalidWithInt(id);
+			
+	       	returnMap.put("code", 200);
+	       	returnMap.put("message", "删除成功！");
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		} catch (Exception e) {
+			returnMap.put("code", 500);
+	       	returnMap.put("message", "删除失败！");
+	       	returnMap.put("error", e + e.getMessage());
+	       	e.printStackTrace();
+	       	ModelAndView mv = this.getModelAndView(returnMap);
+			return mv;
+		}
+	}
+	
+}
+
+#end

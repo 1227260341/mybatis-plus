@@ -1,0 +1,64 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import ${superMapperClassPackage};
+
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * <p>
+ * $!{table.comment} Mapper 接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${kotlin})
+interface ${table.mapperName} : ${superMapperClass}<${entity}>
+#else
+@Mapper
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+	/**
+	 * 获取列表
+	 *
+	 * @author ${author}
+	 * @since ${date}
+	 */
+	public List<${entity}> queryByPage(${entity} ${table.entityPath});
+	
+	/**
+	 * 添加方法
+	 *
+	 * @author ${author}
+	 * @since ${date}
+	 */
+	public int add(${entity} ${table.entityPath});
+	
+	/**
+	 * 设置无效（ID 为int 类型）
+	 *
+	 * @author ${author}
+	 * @since ${date}
+	 */
+	public int update(${entity} ${table.entityPath});
+	
+	/**
+	 * 更新方法
+	 *
+	 * @author ${author}
+	 * @since ${date}
+	 */
+	public int setInvalidWithInt(int id);
+	
+	/**
+	 * 设置无效（ID 为string 类型）
+	 *
+	 * @author ${author}
+	 * @since ${date}
+	 */
+	public int setInvalidWithString(String id);
+	
+}
+#end
