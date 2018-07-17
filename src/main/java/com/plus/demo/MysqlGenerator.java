@@ -44,7 +44,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
  *　　
  *   @Description : MybatisPlus代码生成器
  *   ---------------------------------
- *   @Author : Liang.Guangqing
+ *   @Author : 周振江
  *   @Date : Create in 2017/9/19 14:48　
  */
 public class MysqlGenerator {
@@ -58,6 +58,8 @@ public class MysqlGenerator {
     private static String path = file.getAbsolutePath();
 
     public static void main(String[] args) {
+    	String tables[] = new String[] { "cs_banner", "files_config" };
+    	
         // 自定义需要填充的字段
         List<TableFill> tableFillList = new ArrayList<>();
         tableFillList.add(new TableFill("ASDD_SS", FieldFill.INSERT_UPDATE));
@@ -158,7 +160,7 @@ public class MysqlGenerator {
                         //.setDbColumnUnderline(true)//全局下划线命名
                         .setTablePrefix(new String[]{prefix})// 此处可以修改为您的表前缀
                         .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                        .setInclude(new String[] { "cs_bulletin", "cs_bulletin_read" }) // 需要生成的表
+                        .setInclude(tables) // 需要生成的表
                         .setRestControllerStyle(true)
                         //.setExclude(new String[]{"test"}) // 排除生成的表
                         // 自定义实体父类
