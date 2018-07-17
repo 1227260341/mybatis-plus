@@ -58,6 +58,7 @@ public class MysqlGenerator {
     private static String path = file.getAbsolutePath();
 
     public static void main(String[] args) {
+    	
     	String tables[] = new String[] { "cs_banner", "files_config" };
     	
         // 自定义需要填充的字段
