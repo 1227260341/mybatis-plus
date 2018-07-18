@@ -59,7 +59,7 @@ public class MysqlGenerator {
 
     public static void main(String[] args) {
     	
-    	String tables[] = new String[] { "cs_banner", "files_config" };
+    	String tables[] = new String[] { "cs_bonus_punishment"};
     	
         // 自定义需要填充的字段
         List<TableFill> tableFillList = new ArrayList<>();

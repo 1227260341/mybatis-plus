@@ -5,6 +5,7 @@ import ${superMapperClassPackage};
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 
@@ -29,7 +30,7 @@ public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 	 * @since ${date}
 	 */
 	@Select("SELECT * FROM ${table.name} WHERE id = #{id}")
-	public FilesConfig get(@Param("id") int id);
+	public ${entity} get(@Param("id") int id);
 
 	/**
 	 * 获取列表

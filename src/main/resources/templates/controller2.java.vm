@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import ${package.Mapper}.${table.mapperName};
-import ${package.Service}.${table.serviceName};
+//import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 
 #if(${restControllerStyle})
@@ -56,16 +56,16 @@ public class ${table.controllerName} {
 
 	@Resource
 	private ${table.mapperName} mapper;
-	@Resource
-	private ${table.serviceName} ${table.entityPath}Service;
+	//@Resource
+	//private ${table.serviceName} ${table.entityPath}Service;
 	
 	
 
 	/**
-     * @description : 获取列表
+     *  获取列表
      * ---------------------------------
-     * @author : ${author}
-     * @since : Create in ${date}
+     *  ${author}
+     *  Create in ${date}
      */
 	@RequestMapping("/queryByPage")
 	public @ResponseBody ModelAndView queryByPage(${entity} ${table.entityPath}){
@@ -97,10 +97,10 @@ public class ${table.controllerName} {
 	}
 
 	/**
-     * @description : 添加
+     *  添加
      * ---------------------------------
-     * @author : ${author}
-     * @since : Create in ${date}
+     *  ${author}
+     *  Create in ${date}
      */
 	@RequestMapping("/add")
 	public @ResponseBody ModelAndView add(${entity} ${table.entityPath}){
@@ -124,10 +124,10 @@ public class ${table.controllerName} {
 	}
 	
 	/**
-     * @description : 修改
+     *  修改
      * ---------------------------------
-     * @author : ${author}
-     * @since : Create in ${date}
+     *  ${author}
+     *  Create in ${date}
      */
 	@RequestMapping("/update")
 	public @ResponseBody ModelAndView update(${entity} ${table.entityPath}){
@@ -151,30 +151,30 @@ public class ${table.controllerName} {
 	}
 	
 	/**
-     * @description : 修改
+     *  根据id获取
      * ---------------------------------
-     * @author : ${author}
-     * @since : Create in ${date}
+     *  ${author}
+     *  Create in ${date}
      */
 	@RequestMapping("/getById")
 	public ModelAndView getById(@Param("id") int id) {
 		Map returnMap = new HashMap();
 		PageData pd = this.getPageData();
-		String id1  = (String) pd.get("id");
-		${entity} data = ${table.entityPath}Service.selectById(id);
+		//${entity} data = ${table.entityPath}Service.selectById(id);
+		${entity} data = mapper.selectById(id);
 		
        	returnMap.put("code", 200);
        	returnMap.put("data", data);
-       	returnMap.put("message", "添加成功！");
+       	returnMap.put("message", "获取信息成功！");
        	ModelAndView mv = this.getModelAndView(returnMap);
 		return mv;
 	}
 	
 	/**
-     * @description : 设置无效（逻辑删除）
+     *  设置无效（逻辑删除）
      * ---------------------------------
-     * @author : ${author}
-     * @since : Create in ${date}
+     *  ${author}
+     *  Create in ${date}
      */
 	@RequestMapping("/setInvalid")
 	public @ResponseBody ModelAndView setInvalid(@Param("id") Integer id){
