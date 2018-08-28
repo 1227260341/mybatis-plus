@@ -41,7 +41,7 @@
 		where 1=1
 #foreach($field in ${table.fields})
 		<if test="${field.propertyName} != null and ${field.propertyName} != ''">
-			and ${field.name} = ${field.propertyName}
+			and ${field.name} = #{${field.propertyName}}
 		</if>
 #end
 		
