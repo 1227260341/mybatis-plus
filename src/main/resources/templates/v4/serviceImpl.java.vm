@@ -1,0 +1,81 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import com.zhjs.framework.models.base.vo.PagerResult;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+	@Resource
+	private ${table.mapperName} mapper;
+	@Resource
+	private ${table.serviceName} ${table.entityPath}Service;
+
+	@Override
+	public void addOrUpdate(${entity} item) {
+		LocalDateTime now = LocalDateTime.now();
+		SessionUser user = UserManagerUtil.getSessionUser();
+		if (item.getId() == null) {
+			Long companyId = CompanyManagerUtil.getSessionCompanyId();
+            item.setCreatedTime(now);
+            item.setCreatedBy(user.getUserName());
+//            item.setCreatedBy("zj");
+		}
+		item.setDelFlag(1);
+		item.setUpdatedBy(user.getUserName());
+//		item.setUpdatedBy("zj");
+		item.setUpdatedTime(now);
+		${table.entityPath}Service.saveOrUpdate(item);
+	}
+	
+	@Override
+	public PagerResult<${entity}Vo> getList(${entity}ByPageDto dto) {
+		
+		Long companyId = CompanyManagerUtil.getSessionCompanyId();
+		SessionUser user = UserManagerUtil.getSessionUser();
+		
+		QueryWrapper<${entity}> qw = new QueryWrapper<${entity}>();
+		//qw.eq("customer_clz", customerClz)
+		//.eq("company_id", companyId).and(wrapper -> wrapper.eq("del_flag", 1).or().eq("del_flag", 2));
+		Page<${entity}> page = new Page<${entity}>(dto.getPageNum(), dto.getPageSize());
+		
+		IPage<${entity}> ccPage = mapper.selectPage(page, qw);
+		List<${entity}>  listCc = ccPage.getRecords();
+		List<${entity}Vo>  listVo = crmTransfer.crmCustomers2ListVos(listCc);
+		
+		//绑定上分页参数
+		PagerResult<${entity}Vo> result = new PagerResult<>();
+		result.setCurrentPage(ccPage.getCurrent());
+		result.setList(listVo);
+	    result.setPageSize(ccPage.getSize());
+	    result.setTotal(ccPage.getTotal());
+	    result.setTotalPages(ccPage.getPages());
+		return result;
+	}
+	
+
+}
+#end
