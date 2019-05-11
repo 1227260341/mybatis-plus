@@ -33,6 +33,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 	private ${table.mapperName} mapper;
 	@Resource
 	private ${table.serviceName} ${table.entityPath}Service;
+	@Resource
+	private ${entity}Transfer transfer;
 
 	@Override
 	public void addOrUpdate(${entity} item) {
@@ -42,11 +44,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 			Long companyId = CompanyManagerUtil.getSessionCompanyId();
             item.setCreatedTime(now);
             item.setCreatedBy(user.getUserName());
-//            item.setCreatedBy("zj");
 		}
-		item.setDelFlag(1);
 		item.setUpdatedBy(user.getUserName());
-//		item.setUpdatedBy("zj");
 		item.setUpdatedTime(now);
 		${table.entityPath}Service.saveOrUpdate(item);
 	}
@@ -64,7 +63,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 		
 		IPage<${entity}> ccPage = mapper.selectPage(page, qw);
 		List<${entity}>  listCc = ccPage.getRecords();
-		List<${entity}Vo>  listVo = crmTransfer.crmCustomers2ListVos(listCc);
+		List<${entity}Vo>  listVo = transfer.${table.entityPath}2ListVo(listCc);
 		
 		//绑定上分页参数
 		PagerResult<${entity}Vo> result = new PagerResult<>();

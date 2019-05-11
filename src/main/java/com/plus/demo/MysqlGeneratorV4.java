@@ -50,20 +50,24 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 public class MysqlGeneratorV4 {
 
 	private static String packageUrl="com.zhjs.lzcloud.om.";    //包路径
-    private static String packageName="resources";    //文件路径
-    private static String fileUrl ="/src/main/java/com/zhjs/lzcloud/om/resources/";    //文件路径
+    private static String packageName="purchase";    //文件路径
+    private static String fileUrl ="/src/main/java/com/zhjs/lzcloud/om/" + packageName + "/";    //文件路径
     private static String authorName="zhouzhenjang";     //作者
     private static String table="um_user";                  //table名字
     private static String prefix="om";                     //table前缀
     private static File file = new File(packageName);
     private static String path = file.getAbsolutePath();
-    private static String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/lz_cloud_om?characterEncoding=utf-8&useSSL=false";
+//    private static String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/lz_cloud_om?characterEncoding=utf-8&useSSL=false";
+//    private static String userName = "root";
+//    private static String password = "root";
+    
+    private static String jdbcUrl = "jdbc:mysql://192.168.1.240:3306/lz_cloud_om_temp?characterEncoding=utf-8&useSSL=false";
     private static String userName = "root";
-    private static String password = "root";
+  private static String password = "mysql";
 
     public static void main(String[] args) {
     	
-    	String tables[] = new String[] { "om_mgr_qualification", "om_mgr_qualification_log", "om_mgr_qualification_rent"};
+    	String tables[] = new String[] { "om_labor_fee"};
     	
         // 自定义需要填充的字段
         List<TableFill> tableFillList = new ArrayList<>();
@@ -115,6 +119,30 @@ public class MysqlGeneratorV4 {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path+ fileUrl + "entity/" + tableInfo.getEntityName() + ".java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/v4/transfer.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+ fileUrl + "transfer/" + tableInfo.getEntityName() + "Transfer.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/v4/vo.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+ fileUrl + "vo/" + tableInfo.getEntityName() + "Vo.java";
+            }
+        });
+        
+        focList.add(new FileOutConfig("/templates/v4/dto.java.vm") {
+            // 自定义输出文件目录
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return path+ fileUrl + "dto/" + tableInfo.getEntityName() + "Dto.java";
             }
         });
         

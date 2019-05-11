@@ -64,7 +64,7 @@ public class ${table.controllerName} {
 	@Resource
 	private ${table.serviceName} ${table.entityPath}Service;
 	@Resource
-	private Transfer transfer;
+	private ${entity}Transfer transfer;
 	
 	/**
 	 * 新增
@@ -73,7 +73,7 @@ public class ${table.controllerName} {
 	 */
 	@ApiOperation("新增")
 	@RequestMapping(value="/add", method = RequestMethod.POST)
-	public ResponseBean<Boolean> addPartyA(@Valid @RequestBody ${entity}AddDto dto) {
+	public ResponseBean<Boolean> add(@Valid @RequestBody ${entity}AddDto dto) {
 		${entity} item = transfer.addOrUpdateDto2${entity}(dto);
 		${table.entityPath}Service.addOrUpdate(item);
 		
@@ -103,7 +103,7 @@ public class ${table.controllerName} {
 	@RequestMapping(value="/getList", method = RequestMethod.POST)
 //	@ResponseBody
 	public ResponseBean<PagerResult<${entity}Vo>> getList(@RequestBody ${entity}ByPageDto dto) {
-		//客户分类   0企业本身  1甲方 2供应商   3其他
+
 		PagerResult<${entity}Vo> result = ${table.entityPath}Service.getList(dto);
 		
 		return ReqResUtil.getResponseBean(result);
@@ -119,7 +119,7 @@ public class ${table.controllerName} {
 	public ResponseBean<${entity}Vo> getById(@Valid @RequestBody ${entity}IdDto dto) {
 		
 		${entity} item = ${table.entityPath}Service.getById(dto.getId());
-		${entity}Vo vo = transfer.${table.entityPath}2VoPartyA(item);
+		${entity}Vo vo = transfer.${table.entityPath}2Vo(item);
 		
 		return ReqResUtil.getResponseBean(vo);
 	}
