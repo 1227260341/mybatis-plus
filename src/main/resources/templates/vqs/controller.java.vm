@@ -1,0 +1,91 @@
+package ${package.Controller};
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.huayuan.common.entity.ResultMessage;
+import com.huayuan.common.exception.BadRequestArgumentException;
+import com.huayuan.entity.request.SIdRequest;
+
+//import ${package.Mapper}.${table.mapperName};
+//import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@tController
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+	private static final Logger logger = LoggerFactory.getLogger(${table.controllerName}.class);
+	
+	@Resource
+	private ${table.serviceName} ${table.entityPath}Service;
+	
+	@RequestMapping(value = "user/user/example", method = RequestMethod.POST)
+	public ResultMessage example(@Valid SIdRequest param, @RequestHeader("UUID") String sid, BindingResult result) {
+
+    	logger.debug("example Parameters:", "");
+
+        // 使用@Valid注解自动检查参数有效性
+        if (result.hasErrors()) {
+            logger.debug("example has bad parameters", "");
+            throw new BadRequestArgumentException("无效的参数");
+        }
+        param.setSid(sid);
+        // 调用业务层实现的接口
+        ResultMessage message = userWalletService.example(param);
+        logger.debug("example message", message);
+
+        return message;
+    }
+
+
+
+	
+	
+}
+
+#end

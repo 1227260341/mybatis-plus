@@ -1,4 +1,4 @@
-package com.plus.demo;
+package com.plus.demo.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +65,7 @@ public class MysqlGeneratorV4 {
     private static String userName = "root";
   private static String password = "mysql";
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
     	
     	String tables[] = new String[] { "om_labor_fee"};
     	

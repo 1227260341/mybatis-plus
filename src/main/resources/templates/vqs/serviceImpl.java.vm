@@ -1,0 +1,55 @@
+package ${package.ServiceImpl};
+
+//import ${package.Entity}.${entity};
+//import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+
+import com.huayuan.common.dao.IBaseDao;
+import com.huayuan.common.dao.impl.PublicVerificationService;
+import com.huayuan.common.entity.ResultMessage;
+import com.huayuan.service.BusUsersloginLogService;
+
+import net.sf.json.JSONObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} implements ${table.serviceName} {
+
+	private static final Logger logger = LoggerFactory.getLogger(${table.serviceImplName}.class);
+
+    @Resource
+    private IBaseDao baseDao;
+    @Resource
+    private PublicVerificationService publicVerificationService;
+
+	@Override
+	public ResultMessage example(Object params) {
+		JSONObject jsonParameter = publicVerificationService.verificationToken(params);
+		Object result = baseDao.findListByCustom("walletisTransferMoney", jsonParameter);
+		
+		return new ResultMessage.Builder().code("200").message("查询成功").result("1").returnData(result);
+	}
+	
+
+}
+#end

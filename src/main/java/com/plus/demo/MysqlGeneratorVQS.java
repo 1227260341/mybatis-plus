@@ -47,11 +47,11 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
  *   @Author : 周振江
  *   @Date : Create in 2017/9/19 14:48　
  */
-public class MysqlGeneratorV4 {
+public class MysqlGeneratorVQS {
 
-	private static String packageUrl="com.zhjs.lzcloud.om.";    //包路径
-    private static String packageName="purchase";    //文件路径
-    private static String fileUrl ="/src/main/java/com/zhjs/lzcloud/om/" + packageName + "/";    //文件路径
+	private static String packageUrl="com.huayuan";    //包路径
+    private static String packageName="aaa";    //文件路径
+    private static String fileUrl ="/src/main/java/com/huayuan/" + packageName + "/";    //文件路径
     private static String authorName="zhouzhenjang";     //作者
     private static String table="um_user";                  //table名字
     private static String prefix="om";                     //table前缀
@@ -61,20 +61,20 @@ public class MysqlGeneratorV4 {
 //    private static String userName = "root";
 //    private static String password = "root";
     
-    private static String jdbcUrl = "jdbc:mysql://192.168.1.240:3306/lz_cloud_om_temp?characterEncoding=utf-8&useSSL=false";
-    private static String userName = "root";
-  private static String password = "mysql";
+    private static String jdbcUrl = "jdbc:mysql://47.107.83.176:3306/huayuan_9006_userAccountService?useSSL=false&characterEncoding=UTF-8";
+	private static String userName = "duobao";
+	private static String password = "duobao321";
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
     	
-    	String tables[] = new String[] { "om_labor_fee"};
+    	String tables[] = new String[] { "BUS_usersLogin_log"};
     	
         // 自定义需要填充的字段
         List<TableFill> tableFillList = new ArrayList<>();
         tableFillList.add(new TableFill("ASDD_SS", FieldFill.INSERT_UPDATE));
         
         List<FileOutConfig> focList = new ArrayList<>();
-        focList.add(new FileOutConfig("/templates/v4/mapper.xml.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/mapper.xml.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -82,7 +82,7 @@ public class MysqlGeneratorV4 {
             }
         });
         
-        focList.add(new FileOutConfig("/templates/v4/controller.java.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/controller.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -90,7 +90,7 @@ public class MysqlGeneratorV4 {
             }
         });
         
-        focList.add(new FileOutConfig("/templates/v4/mapper.java.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/mapper.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -98,7 +98,7 @@ public class MysqlGeneratorV4 {
             }
         });
         
-        focList.add(new FileOutConfig("/templates/v4/service.java.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/service.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -106,7 +106,7 @@ public class MysqlGeneratorV4 {
             }
         });
         
-        focList.add(new FileOutConfig("/templates/v4/serviceImpl.java.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/serviceImpl.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -114,35 +114,11 @@ public class MysqlGeneratorV4 {
             }
         });
         
-        focList.add(new FileOutConfig("/templates/v4/entity.java.vm") {
+        focList.add(new FileOutConfig("/templates/vqs/entity.java.vm") {
             // 自定义输出文件目录
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return path+ fileUrl + "entity/" + tableInfo.getEntityName() + ".java";
-            }
-        });
-        
-        focList.add(new FileOutConfig("/templates/v4/transfer.java.vm") {
-            // 自定义输出文件目录
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return path+ fileUrl + "transfer/" + tableInfo.getEntityName() + "Transfer.java";
-            }
-        });
-        
-        focList.add(new FileOutConfig("/templates/v4/vo.java.vm") {
-            // 自定义输出文件目录
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return path+ fileUrl + "vo/" + tableInfo.getEntityName() + "Vo.java";
-            }
-        });
-        
-        focList.add(new FileOutConfig("/templates/v4/dto.java.vm") {
-            // 自定义输出文件目录
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return path+ fileUrl + "dto/" + tableInfo.getEntityName() + "Dto.java";
             }
         });
         
@@ -206,10 +182,10 @@ public class MysqlGeneratorV4 {
                         .setSuperMapperClass("com.baomidou.mybatisplus.core.mapper.BaseMapper")
                 // 自定义 service 父类
                 // .setSuperServiceClass("com.baomidou.demo.TestService")
-                        .setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService")
+//                        .setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService")
                 // 自定义 service 实现类父类
                 // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
-                        .setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl")
+//                        .setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl")
                 // 自定义 controller 父类
 //                .setSuperControllerClass(packageUrl +packageName+".controller.AbstractController")
 //                .setSuperControllerClass("com21cnjy.crowdsourcing.common.util.BaseController")
@@ -229,7 +205,7 @@ public class MysqlGeneratorV4 {
                 // 包配置
                 new PackageConfig()
                         //.setModuleName("User")
-                        .setParent(packageUrl+packageName)// 自定义包路径
+                        .setParent(packageUrl)// 自定义包路径
                         .setController("controller")// 这里是控制器包名，默认 web
                         .setEntity("entity")
                         .setMapper("mapper")
