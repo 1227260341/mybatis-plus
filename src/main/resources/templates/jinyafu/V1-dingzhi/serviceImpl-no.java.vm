@@ -1,0 +1,154 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+import com.jinyafu.base.code.utils.IdGenUtil;
+import java.util.Date;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ * @Copyright 深圳金雅福控股集团有限公司
+ * @author ${author}
+ * @since ${date}
+ * @Version: 1.0
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>  {
+
+	@Resource
+	private ${table.mapperName} mapper;
+
+	/**
+	 * @Description: 新增或修改
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	public void addOrUpdate(${entity} item) {
+		Date now = new Date();
+		//UserAuthInfo user = UserUtil.getUser();
+		ManageUserInfo user = UserUtil.getUser();
+		String operateUser = user.getUserName() + "/" + user.getFullName();
+		//item.setOperate(operateUser);
+		if (item.getId() == null) {
+			long id = IdGenUtil.get().nextId();
+		    item.setId(id);
+            item.setCreateTime(now);
+            //item.setCreateUser(operateUser);
+            this.save(item);
+		} else {
+			//item.setUpdateUser(user.getUsername());
+			item.setUpdateTime(now);
+			this.saveOrUpdate(item);
+		}
+	}
+	
+	/**
+	 * @Description: 获取列表数据
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	public BaseResponsePageData<${entity}ResDTO> get${entity}List(${entity}ReqDTO dto) {
+		
+		QueryWrapper<${entity}> qw = new QueryWrapper<${entity}>();
+		//qw.eq("customer_clz", customerClz)
+		//.eq("company_id", companyId).and(wrapper -> wrapper.eq("del_flag", 1).or().eq("del_flag", 2));
+		Page<${entity}> page = new Page<${entity}>(dto.getPage().getPageNum(), dto.getPage().getPageSize());
+		
+		IPage<${entity}> ccPage = mapper.selectPage(page, qw);
+		List<${entity}>  listCc = ccPage.getRecords();
+		List<${entity}ResDTO> listVo = new ArrayList<${entity}ResDTO>();
+		BeanUtil.copy(listCc, listVo);
+		
+		//绑定上分页参数
+		BaseResponsePageData<${entity}ResDTO> result = new BaseResponsePageData<>();
+		result.setPageNum(ccPage.getCurrent());
+		result.setList(listVo);
+	    result.setTotal(ccPage.getTotal());
+	    result.setTotalPage(ccPage.getPages());
+		return result;
+	}
+	
+	/**
+	 * 通过id 获取对应数据 并抛出错误
+	 * @version ${date}
+	 * @author zhouzj
+	 * @param id
+	 * @return
+	 */
+	public ${entity} getBaseDataByIdAndThrow(Long id) {
+		${entity} item = this.getById(id);
+		if (item == null) {
+			throw new MessageException(ResponseEnum.NOT_FIND_DATA.getCode(), ResponseEnum.NOT_FIND_DATA.getMessage()); 
+		}
+		return item;
+	}
+	
+	/**
+	 * 设置$!{table.comment}排序
+	 * @version ${date}
+	 * @author zhouzj
+	 * @param id
+	 * @param sort
+	 */
+	public void set${entity}Sort(Long id, Integer sort) {
+		${entity} item = this.getBaseDataByIdAndThrow(id);
+		item.setSort(sort);
+		this.addOrUpdate(item);
+	}
+
+	/**
+	 * 设置$!{table.comment} 启用体用状态
+	 * @version ${date}
+	 * @author zhouzj
+	 * @param id
+	 */
+	public void set${entity}Status(long id) {
+		${entity} item = this.getBaseDataByIdAndThrow(id);
+		Integer status = item.getStatus();
+		if (status == StatusEnum.DISABLE) {
+			status = StatusEnum.ENABLE;
+		} else {
+			status = StatusEnum.DISABLE;
+		}
+		item.setStatus(status);
+		this.addOrUpdate(item);
+	}
+
+	/**
+	 * 通过id 删除对应的$!{table.comment}数据
+	 * @version ${date}
+	 * @author zhouzj
+	 * @param id
+	 */
+	public void delete${entity}ById(long id) {
+		${entity} item = this.getBaseDataByIdAndThrow(id);
+		Integer status = item.getStatus();
+		if (status == StatusEnum.ENABLE) {
+			throw new MessageException(ResponseEnum.STOP_STATUS_NOT_DELETE_FAIL.getCode(), ResponseEnum.STOP_STATUS_NOT_DELETE_FAIL.getMessage()); 
+		}
+		item.setIsDelete(YesOrNoEnums.YES);
+		this.addOrUpdate(item);
+	}
+
+}
+#end

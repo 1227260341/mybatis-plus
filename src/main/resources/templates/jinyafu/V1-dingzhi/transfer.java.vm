@@ -1,0 +1,34 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+
+import java.util.List;
+import com.zhjs.lzcloud.om.models.crm.dto.CrmcustomerAddDto;
+import com.zhjs.lzcloud.om.models.crm.dto.CrmcustomerUpdateDto;
+import com.zhjs.lzcloud.om.models.crm.vo.CrmCustomerVo;
+import com.zhjs.lzcloud.om.models.systemsetup.dto.CorporateInfoDto;
+import com.zhjs.lzcloud.om.models.systemsetup.vo.CorporateInfoVo;
+
+import org.mapstruct.Mapper;
+
+/**
+ * <p>
+ * $!{table.comment} 对象转换
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Mapper(componentModel = "spring")
+public interface ${entity}Transfer {
+
+    ${entity} addOrUpdateDto2${entity}(${entity}AddDto dto);
+    
+    ${entity} addOrUpdateDto2${entity}(${entity}UpdateDto dto);
+    
+    List<${entity}Vo> ${table.entityPath}2ListVo(List<${entity}> list);
+    
+    ${entity}Vo ${table.entityPath}2Vo(${entity} ${table.entityPath});
+	
+}
+

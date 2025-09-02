@@ -1,0 +1,42 @@
+package ${package.Service};
+
+import ${package.Entity}.${entity};
+import ${superServiceClassPackage};
+import com.zhjs.framework.models.base.vo.PagerResult;
+
+/**
+ * <p>
+ * $!{table.comment} 服务类
+ * </p>
+ * @Copyright 深圳金雅福控股集团有限公司
+ * @author ${author}
+ * @since ${date}
+ * @Version: 1.0
+ */
+#if(${kotlin})
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#else
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+	
+	/**
+	 * @Description: 新增或修改
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	public void addOrUpdate(${entity} ${table.entityPath});
+	
+	/**
+	 * @Description: 获取列表数据
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	public BaseResponsePageData<${entity}ResDTO> getList(${entity}ByPageReqDTO dto);
+	
+	
+	
+}
+#end

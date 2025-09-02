@@ -1,0 +1,91 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+import com.jinyafu.base.code.utils.IdGenUtil;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ * @Copyright 深圳金雅福控股集团有限公司
+ * @author ${author}
+ * @since ${date}
+ * @Version: 1.0
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+	@Resource
+	private ${table.mapperName} ${entity}Mapper;
+
+	/**
+	 * @Description: 新增或修改
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	@Override
+	public void addOrUpdate${entity}(${entity} item) {
+		Date now = new Date();
+		UserAuthInfo user = UserUtil.getUser();
+		if (item.getId() == null) {
+			long id = IdGenUtil.get().nextId();
+		    item.setId(id);
+            item.setCreateTime(now);
+            item.setCreateUser(user.getUsername());
+            this.save(item);
+		} else {
+			item.setUpdateUser(user.getUsername());
+			item.setUpdateTime(now);
+			this.saveOrUpdate(item);
+		}
+	}
+	
+	/**
+	 * @Description: 获取列表数据
+	 * @Copyright 深圳金雅福控股集团有限公司
+	 * @author ${author}
+	 * @Date ${date}
+	 * @Version: 1.0
+	 */
+	@Override
+	public BaseResponsePageData<${entity}ResDTO> get${entity}List(${entity}ByPageReqDTO dto) {
+		
+		LambdaQueryWrapper<${entity}> qw = new LambdaQueryWrapper<${entity}>();
+		//qw.eq("customer_clz", customerClz)
+		//.eq("company_id", companyId).and(wrapper -> wrapper.eq("del_flag", 1).or().eq("del_flag", 2));
+		Page<${entity}> page = new Page<${entity}>(dto.getPage().getPageNum(), dto.getPage().getPageSize());
+		
+		IPage<${entity}> ccPage = ${entity}Mapper.selectPage(page, qw);
+		List<${entity}>  listCc = ccPage.getRecords();
+		List<${entity}ResDTO> listVo = new ArrayList<${entity}ResDTO>();
+		BeanUtil.copy(listCc, listVo);
+		
+		//绑定上分页参数
+		BaseResponsePageData<${entity}ResDTO> result = new BaseResponsePageData<>();
+		result.setPageNum(ccPage.getCurrent());
+		result.setList(listVo);
+	    result.setTotal(ccPage.getTotal());
+	    result.setTotalPage(ccPage.getPages());
+		return result;
+	}
+	
+
+}
+#end
